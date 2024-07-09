@@ -22,15 +22,10 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://www.everlane.com/products/womens-organic-cotton-slim-crew-tee-white?collection=womens-all-tops', # 여성 반팔
-    'https://www.everlane.com/products/womens-premium-weight-jersey-top-navy?collection=womens-all-tops', # 여성 긴팔
-    'https://www.everlane.com/products/womens-a-line-denim-short-spring-blue?collection=womens-skirts-shorts', # 여성 반바지
-    'https://www.everlane.com/products/womens-utility-arc-pant-organic-bone?collection=womens-pants-trousers', # 여성 긴바지
-    'https://www.everlane.com/products/mens-essential-organic-crew-uniform-white?collection=mens-all-shirts-tops', # 남성 반팔
-    'https://www.everlane.com/products/mens-linen-ls-shirt-bone-black?collection=mens-all-shirts-tops', # 남성 긴팔
-    'https://www.everlane.com/products/mens-renew-nylon-short-black?collection=mens-bottoms', # 남성 반바지
-    'https://www.everlane.com/products/mens-organic-cotton-straight-leg-jean-salt-lake?collection=mens-jeans' # 남성 긴바지
-    # 다른 사이트 URL 추가
+    'https://www.hollisterco.com/shop/wd/p/seamless-fabric-longline-crew-t-shirt-56759328?categoryId=120721&faceout=model&seq=12', # 여성 반팔
+    'https://www.hollisterco.com/shop/wd/p/easy-crew-sweater-56740835?categoryId=12627&faceout=model&seq=04', # 여성 긴팔
+    'https://www.hollisterco.com/shop/wd/p/relaxed-cooling-tee-57410320?categoryId=166245&faceout=model&seq=04', # 남성 반팔
+    'https://www.hollisterco.com/shop/wd/p/relaxed-atlanta-1996-olympics-graphic-crew-sweatshirt-57206820?categoryId=12572&faceout=model&seq=02', # 남성 긴팔
 ]
 
 # 데이터 저장을 위한 리스트
@@ -43,23 +38,28 @@ os.makedirs(output_folder, exist_ok=True)
 for url in urls:
     # 웹 페이지 열기
     driver.get(url)
-
     try:
-        # 'SIZE GUIDE' 버튼 클릭 (XPath로 찾기)
-        button = WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[text()='SIZE GUIDE']"))
+        cookie = WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(@id, 'onetrust-accept-btn-handler')]"))
+        )
+        cookie.click()
+    except Exception as e:
+            print("No cookie banner found or could not click it.")
+    
+    try:
+        button = WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[text()='Size Guide']"))
         )
         button.click()
 
-        # 단위 변환 버튼 클릭 (XPath로 찾기)
-        button2 = WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'styles_toggle__b5Nom styles_size-guide-content__unit-toggle__A_2wg')]"))
+        button1 = WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[contains(@data-testid, 'toggle-block-measurement-cm')]"))
         )
-        button2.click()
+        button1.click()
 
         # 테이블이 나타날 때까지 대기 (XPath 사용)
-        table = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.XPATH, "//table[contains(@class, 'styles_size-guide-table__QW7Nu')]"))
+        table = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//table[contains(@class, 'size-tables__table')]"))
         )
 
         # 테이블 크롤링
@@ -71,7 +71,6 @@ for url in urls:
             cols = [col.text for col in cols]
             data.append(cols)
 
-        # 데이터프레임으로 변환
         df = pd.DataFrame(data)
         all_data.append(df)
 
@@ -85,7 +84,7 @@ for url in urls:
 combined_df = pd.concat(all_data, ignore_index=True)
 
 # 엑셀 파일로 저장
-excel_path = os.path.join(output_folder, 'size_tables_everlane.xlsx')
+excel_path = os.path.join(output_folder, 'size_tables_hollisterco.xlsx')
 combined_df.to_excel(excel_path, index=False)
 
 # 드라이버 종료
