@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 import pandas as pd
+import os
 
 # 올바른 ChromeDriver 경로 설정
 driver_path = 'D:/IDA/chromedriver-win64/chromedriver-win64/chromedriver.exe'  # chromedriver.exe의 정확한 경로로 변경
@@ -34,6 +35,10 @@ urls = [
 
 # 데이터 저장을 위한 리스트
 all_data = []
+
+# 폴더 생성
+output_folder = 'output'
+os.makedirs(output_folder, exist_ok=True)
 
 for url in urls:
     # 웹 페이지 열기
@@ -80,7 +85,8 @@ for url in urls:
 combined_df = pd.concat(all_data, ignore_index=True)
 
 # 엑셀 파일로 저장
-combined_df.to_excel('size_tables_everlane.xlsx', index=False)
+excel_path = os.path.join(output_folder, 'size_tables_everlane.xlsx')
+combined_df.to_excel(excel_path, index=False)
 
 # 드라이버 종료
 driver.quit()
