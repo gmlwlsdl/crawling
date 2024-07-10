@@ -22,8 +22,10 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://freeflyapparel.com/collections/all-tops-women/products/womens-daybreak-tee-heather-fig', # 여성 상의, 하의
-    'https://freeflyapparel.com/collections/tops-men-all/products/mens-bamboo-shade-long-sleeve-heather-agave-green', # 남성 상의, 하의
+    'https://www.outdoorresearch.com/collections/womens-tops/products/womens-echo-t-shirt-287658', # 여성 상의
+    'https://www.outdoorresearch.com/collections/womens-bottoms/products/womens-ferrosi-pants-regular-287668', # 여성 하의
+    'https://www.outdoorresearch.com/collections/mens-tops/products/mens-astroman-air-short-sleeve-shirt-300940', # 남성 상의
+    'https://www.outdoorresearch.com/collections/mens-bottoms/products/mens-ferrosi-pants-32-287641', # 남성 하의
 ]
 
 # 데이터 저장을 위한 리스트
@@ -94,7 +96,7 @@ if all_data:
     combined_df = pd.concat(all_data, ignore_index=True)
 
     # 엑셀 파일로 저장
-    excel_path = os.path.join(output_folder, 'size_table_freefly.xlsx')
+    excel_path = os.path.join(output_folder, 'size_table_outdoorresearch.xlsx')
     combined_df.to_excel(excel_path, index=False)
 
     print(f"Data saved to {excel_path}")
