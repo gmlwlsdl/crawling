@@ -22,10 +22,9 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://www.landsend.com/products/womens-relaxed-supima-cotton-t-shirt/id_234879?attributes=43307,43322,44256,44967,46537', # 여성 상의
-    'https://www.landsend.com/products/womens-starfish-mid-rise-knit-denim-straight-jeans/id_373559?attributes=5458,43307,43323,43384,44256,44967', # 여성 하의
-    'https://www.landsend.com/products/mens-super-t-short-sleeve-t-shirt/id_130671?attributes=43307,43322,43381,44215,44255,44967,51423', # 남성 상의
-    'https://www.landsend.com/products/mens-traditional-fit-comfort-first-jeans/id_357189?attributes=43307,43323,43384,44255,44967,48781', # 남성 하의
+    'https://tjmaxx.tjx.com/store/jump/product/women-clothing-tops/Georgia-Tie-Back-Top/1000828773?colorId=NS1272928&pos=1:26&N=963856700', # 여성 상의, 하의
+    'https://tjmaxx.tjx.com/store/jump/product/women-clothing-tops/Plus-Linen-Short-Sleeve-V-neck-Seamed-Top/1000855718?colorId=NS13820198&pos=1:16&N=963856700', # 여성 상의, 하의 plus
+    'https://tjmaxx.tjx.com/store/jump/product/men-clothing-shirts/Tipped-Sweater-Polo/1000887033?colorId=NS1452711&pos=1:13&N=1680572910', # 남성 상의, 하의
 ]
 
 # 데이터 저장을 위한 리스트
