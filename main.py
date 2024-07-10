@@ -22,10 +22,8 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://www.prana.com/p/cozy-up-t-shirt/1964391.html?dwvar_1964391_color=Canvas%20Heather', # 여성 상의 - Standard, Plus
-    'https://www.prana.com/p/halle-pant/2056971.html?dwvar_2056971_color=Black', # 여성 하의 - Standard, Plus
-    'https://www.prana.com/p/tinline-shirt/1968791.html?dwvar_1968791_color=Yarrow%20Rocks', # 남성 상의 - Standard
-    'https://www.prana.com/p/bridger-jean/M4BD99315.html?dwvar_M4BD99315_color=Mud', # 남성 하의 - Standard
+    'https://kavu.com/collections/womens-tops/products/hillrose', # 여성 상의, 하의
+    'https://kavu.com/collections/mens-tops/products/klear-above-etch-art', # 남성 상의, 하의
 ]
 
 # 데이터 저장을 위한 리스트
@@ -96,7 +94,7 @@ if all_data:
     combined_df = pd.concat(all_data, ignore_index=True)
 
     # 엑셀 파일로 저장
-    excel_path = os.path.join(output_folder, 'size_table_prana.xlsx')
+    excel_path = os.path.join(output_folder, 'size_table_kavu.xlsx')
     combined_df.to_excel(excel_path, index=False)
 
     print(f"Data saved to {excel_path}")
