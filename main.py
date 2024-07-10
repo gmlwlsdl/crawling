@@ -22,9 +22,10 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://www.patagonia.com/product/womens-recycled-wool-crewneck-sweater/51025.html?dwvar_51025_color=SMDB&cgid=womens-sweaters', # 여성 상의, 하의
-    'https://www.patagonia.com/product/mens-capilene-cool-daily-shirt/45215.html?dwvar_45215_color=UTBX&cgid=mens-t-shirts', # 남성 상의
-    'https://www.patagonia.com/product/mens-quandary-hiking-joggers/55796.html?dwvar_55796_color=FGE&cgid=mens-pants-jeans' # 남성 하의
+    'https://www.columbia.com/p/womens-canyonland-trail-long-sleeve-t-shirt-2103391.html?dwvar_2103391_color=349', # 여성 상의
+    'https://www.columbia.com/p/womens-bogata-bay-stretch-shorts-1961031.html?dwvar_1961031_color=010', # 여성 하의
+    'https://www.columbia.com/p/mens-thistletown-hills-short-sleeve-shirt-1990751.html?dwvar_1990751_color=010' # 남성 상의
+    'https://www.columbia.com/p/mens-pfg-backcast-iii-water-shorts-1535781.html?dwvar_1535781_color=160' # 남성 하의
 ]
 
 # 데이터 저장을 위한 리스트
@@ -95,7 +96,7 @@ if all_data:
     combined_df = pd.concat(all_data, ignore_index=True)
 
     # 엑셀 파일로 저장
-    excel_path = os.path.join(output_folder, 'size_table_patagonia.xlsx')
+    excel_path = os.path.join(output_folder, 'size_table_columbia.xlsx')
     combined_df.to_excel(excel_path, index=False)
 
     print(f"Data saved to {excel_path}")
