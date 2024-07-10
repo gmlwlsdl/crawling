@@ -22,8 +22,10 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://global.llbean.com/shop/Womens-L.L.Bean-Jewelneck-Tee-Elbow-Sleeve/122987.html', # 여성 하의
-    'https://global.llbean.com/shop/Mens-Carefree-Unshrinkable-Tee-Traditional-Fit-Short-Sleeve/40651.html#start=1', # 남성 상의, 하의
+    'https://www.landsend.com/products/womens-relaxed-supima-cotton-t-shirt/id_234879?attributes=43307,43322,44256,44967,46537', # 여성 상의
+    'https://www.landsend.com/products/womens-starfish-mid-rise-knit-denim-straight-jeans/id_373559?attributes=5458,43307,43323,43384,44256,44967', # 여성 하의
+    'https://www.landsend.com/products/mens-super-t-short-sleeve-t-shirt/id_130671?attributes=43307,43322,43381,44215,44255,44967,51423', # 남성 상의
+    'https://www.landsend.com/products/mens-traditional-fit-comfort-first-jeans/id_357189?attributes=43307,43323,43384,44255,44967,48781', # 남성 하의
 ]
 
 # 데이터 저장을 위한 리스트
