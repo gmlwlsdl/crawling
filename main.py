@@ -22,8 +22,8 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://www.backcountry.com/backcountry-destination-crew-top-womens', # 여성 상의, 하의
-    'https://www.backcountry.com/backcountry-cotton-button-up-mens', # 남성 상의, 하의 (허리)
+    'https://www.marmot.com/women/tops/womens-marmot-mountain-works-t-shirt/AFS_195115224905.html', # 여성 상의, 하의 - Regular, Plus
+    'https://www.marmot.com/men/tops/shirts-and-polos/mens-aerobora-novelty-short-sleeve-shirt/AFS_195115211554.html', # 남성 상의, 하의 - Regular, Big, Big and Tall
 ]
 
 # 데이터 저장을 위한 리스트
@@ -94,7 +94,7 @@ if all_data:
     combined_df = pd.concat(all_data, ignore_index=True)
 
     # 엑셀 파일로 저장
-    excel_path = os.path.join(output_folder, 'size_table_backcountry.xlsx')
+    excel_path = os.path.join(output_folder, 'size_table_marmot.xlsx')
     combined_df.to_excel(excel_path, index=False)
 
     print(f"Data saved to {excel_path}")
