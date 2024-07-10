@@ -5,10 +5,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 import pandas as pd
 import os
-import time
 
 # 올바른 ChromeDriver 경로 설정
-driver_path = 'D:/IDA/chromedriver-win64/chromedriver-win64/chromedriver.exe'  # chromedriver.exe의 정확한 경로로 변경
+driver_path = 'D:/IDA/chromedriver-win64/chromedriver-win64/chromedriver.exe'
 service = Service(driver_path)
 
 # Chrome 옵션 설정
@@ -23,8 +22,9 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://www.backcountry.com/backcountry-destination-crew-top-womens?skid=BCCZ2PZ-STA', # 여성 상의, 하의
-    'https://www.backcountry.com/backcountry-cotton-button-up-mens', # 남성 상의, 하의
+    'https://www.patagonia.com/product/womens-recycled-wool-crewneck-sweater/51025.html?dwvar_51025_color=SMDB&cgid=womens-sweaters', # 여성 상의, 하의
+    'https://www.patagonia.com/product/mens-capilene-cool-daily-shirt/45215.html?dwvar_45215_color=UTBX&cgid=mens-t-shirts', # 남성 상의
+    'https://www.patagonia.com/product/mens-quandary-hiking-joggers/55796.html?dwvar_55796_color=FGE&cgid=mens-pants-jeans' # 남성 하의
 ]
 
 # 데이터 저장을 위한 리스트
@@ -32,7 +32,6 @@ all_data = []
 
 # 폴더 생성
 output_folder = 'output'
-os.makedirs(output_folder, exist_ok=True)
 
 def click_element_js(driver, element):
     try:
@@ -40,10 +39,22 @@ def click_element_js(driver, element):
     except Exception as e:
         print(f"An error occurred while trying to click the element: {e}")
 
+def extract_table_data(table):
+    rows = table.find_elements(By.TAG_NAME, "tr")
+    data = []
+    for row in rows:
+        if row.find_elements(By.TAG_NAME, "th"):
+            cols = row.find_elements(By.TAG_NAME, "th")
+        else:
+            cols = row.find_elements(By.TAG_NAME, "td")
+        cols = [col.text for col in cols if col.text.strip()]
+        data.append(cols)
+    return data
+
 for url in urls:
     # 웹 페이지 열기
     driver.get(url)
-    time.sleep(5)
+    WebDriverWait(driver, 5)  # 페이지 로드 대기
 
     # 쿠키 처리
     try:
@@ -56,26 +67,20 @@ for url in urls:
     
     try:
         button = WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/main/div/div[3]/div[2]/div[3]/div[3]/div[1]/div[2]/span"))
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'js-size-chart-button')]"))
         )
-        button.click()
+        click_element_js(driver, button)
 
         table = WebDriverWait(driver, 40).until(
-            EC.presence_of_element_located((By.XPATH, "//table[contains(@class, 'sizing_chart')]"))
+            EC.presence_of_element_located((By.XPATH, "//table[contains(@class, 'table table-dark table-striped text-center')]"))
         )
 
         # 테이블 크롤링
-        rows = table.find_elements(By.TAG_NAME, "tr")
-        data = []
-
-        for row in rows:
-            cols = row.find_elements(By.TAG_NAME, "td")
-            cols = [col.text for col in cols if col.text.strip()]
-            data.append(cols)
+        table_data = extract_table_data(table)
 
         # 데이터프레임으로 변환
-        if data and len(data[0]) > 0:  # 데이터가 존재하는 경우에만 변환
-            df = pd.DataFrame(data[1:], columns=data[0])  # 첫 번째 행을 헤더로 사용
+        if table_data and len(table_data[0]) > 0:  # 데이터가 존재하는 경우에만 변환
+            df = pd.DataFrame(table_data[1:], columns=table_data[0])  # 첫 번째 행을 헤더로 사용
             all_data.append(df)
             print(f"Data from {url}:")
             print(df)
@@ -90,7 +95,7 @@ if all_data:
     combined_df = pd.concat(all_data, ignore_index=True)
 
     # 엑셀 파일로 저장
-    excel_path = os.path.join(output_folder, 'size_table_backcountry.xlsx')
+    excel_path = os.path.join(output_folder, 'size_table_patagonia.xlsx')
     combined_df.to_excel(excel_path, index=False)
 
     print(f"Data saved to {excel_path}")
