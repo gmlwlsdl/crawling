@@ -22,9 +22,8 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://tjmaxx.tjx.com/store/jump/product/women-clothing-tops/Georgia-Tie-Back-Top/1000828773?colorId=NS1272928&pos=1:26&N=963856700', # 여성 상의, 하의
-    'https://tjmaxx.tjx.com/store/jump/product/women-clothing-tops/Plus-Linen-Short-Sleeve-V-neck-Seamed-Top/1000855718?colorId=NS13820198&pos=1:16&N=963856700', # 여성 상의, 하의 plus
-    'https://tjmaxx.tjx.com/store/jump/product/men-clothing-shirts/Tipped-Sweater-Polo/1000887033?colorId=NS1452711&pos=1:13&N=1680572910', # 남성 상의, 하의
+    'https://www.aeropostale.com/seriously-soft-boat-neck-baby-tee/80644473.html?dwvar_80644473_color=7&cgid=girls-tops#uuid=ca14bca1c0be8c49710f5ec4b6', # 여성 상의, 남성 상의, 공용 상의
+    'https://www.aeropostale.com/low-rise-baggy-jean/87011373.html?dwvar_87011373_color=962&cgid=jeans-girls', # 여성 하의, 남성 하의, 공용 하의
 ]
 
 # 데이터 저장을 위한 리스트
@@ -95,7 +94,7 @@ if all_data:
     combined_df = pd.concat(all_data, ignore_index=True)
 
     # 엑셀 파일로 저장
-    excel_path = os.path.join(output_folder, 'size_table_columbia.xlsx')
+    excel_path = os.path.join(output_folder, 'size_table_aeropostale.xlsx')
     combined_df.to_excel(excel_path, index=False)
 
     print(f"Data saved to {excel_path}")
