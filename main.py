@@ -3,7 +3,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.action_chains import ActionChains
 import pandas as pd
 import os
 import time
@@ -24,8 +23,8 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://www.yoox.com/kr/customercare/article/%EC%97%AC%EC%84%B1---%EC%9D%98%EB%A5%98_ccid604300000002296', # 여성 의류
-    'https://www.yoox.com/kr/customercare/article/%EB%82%A8%EC%84%B1---%EC%9D%98%EB%A5%98_ccid604300000002307' # 남성 의류
+    'https://www.backcountry.com/backcountry-destination-crew-top-womens?skid=BCCZ2PZ-STA', # 여성 상의, 하의
+    'https://www.backcountry.com/backcountry-cotton-button-up-mens', # 남성 상의, 하의
 ]
 
 # 데이터 저장을 위한 리스트
@@ -33,6 +32,13 @@ all_data = []
 
 # 폴더 생성
 output_folder = 'output'
+os.makedirs(output_folder, exist_ok=True)
+
+def click_element_js(driver, element):
+    try:
+        driver.execute_script("arguments[0].click();", element)
+    except Exception as e:
+        print(f"An error occurred while trying to click the element: {e}")
 
 for url in urls:
     # 웹 페이지 열기
@@ -42,15 +48,20 @@ for url in urls:
     # 쿠키 처리
     try:
         cookie = WebDriverWait(driver, 30).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(@id, 'onetrust-accept-btn-handler')]"))
+            EC.element_to_be_clickable((By.ID, 'onetrust-accept-btn-handler'))
         )
         cookie.click()
     except Exception as e:
-            print("No cookie banner found or could not click it.")
+        print("No cookie banner found or could not click it.")
     
     try:
+        button = WebDriverWait(driver, 20).until(
+            EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/main/div/div[3]/div[2]/div[3]/div[3]/div[1]/div[2]/span"))
+        )
+        button.click()
+
         table = WebDriverWait(driver, 40).until(
-            EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/main/div[2]/main/div[2]/div/div[1]/div/table[2]"))
+            EC.presence_of_element_located((By.XPATH, "//table[contains(@class, 'sizing_chart')]"))
         )
 
         # 테이블 크롤링
@@ -59,12 +70,12 @@ for url in urls:
 
         for row in rows:
             cols = row.find_elements(By.TAG_NAME, "td")
-            cols = [col.text for col in cols]
+            cols = [col.text for col in cols if col.text.strip()]
             data.append(cols)
 
         # 데이터프레임으로 변환
-        if data:  # 데이터가 존재하는 경우에만 변환
-            df = pd.DataFrame(data)
+        if data and len(data[0]) > 0:  # 데이터가 존재하는 경우에만 변환
+            df = pd.DataFrame(data[1:], columns=data[0])  # 첫 번째 행을 헤더로 사용
             all_data.append(df)
             print(f"Data from {url}:")
             print(df)
@@ -75,11 +86,16 @@ for url in urls:
         print(f"An error occurred while processing {url}: {e}")
 
 # 모든 데이터를 하나의 데이터프레임으로 결합
-combined_df = pd.concat(all_data, ignore_index=True)
+if all_data:
+    combined_df = pd.concat(all_data, ignore_index=True)
 
-# 엑셀 파일로 저장
-excel_path = os.path.join(output_folder, 'size_table_yoox.xlsx')
-combined_df.to_excel(excel_path, index=False)
+    # 엑셀 파일로 저장
+    excel_path = os.path.join(output_folder, 'size_table_backcountry.xlsx')
+    combined_df.to_excel(excel_path, index=False)
+
+    print(f"Data saved to {excel_path}")
+else:
+    print("No data was collected.")
 
 # 드라이버 종료
 driver.quit()
