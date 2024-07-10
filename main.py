@@ -22,10 +22,8 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://www.columbia.com/p/womens-canyonland-trail-long-sleeve-t-shirt-2103391.html?dwvar_2103391_color=349', # 여성 상의
-    'https://www.columbia.com/p/womens-bogata-bay-stretch-shorts-1961031.html?dwvar_1961031_color=010', # 여성 하의
-    'https://www.columbia.com/p/mens-thistletown-hills-short-sleeve-shirt-1990751.html?dwvar_1990751_color=010' # 남성 상의
-    'https://www.columbia.com/p/mens-pfg-backcast-iii-water-shorts-1535781.html?dwvar_1535781_color=160' # 남성 하의
+    'https://global.llbean.com/shop/Womens-L.L.Bean-Jewelneck-Tee-Elbow-Sleeve/122987.html', # 여성 하의
+    'https://global.llbean.com/shop/Mens-Carefree-Unshrinkable-Tee-Traditional-Fit-Short-Sleeve/40651.html#start=1', # 남성 상의, 하의
 ]
 
 # 데이터 저장을 위한 리스트
