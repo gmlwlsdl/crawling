@@ -22,17 +22,14 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 사이트 리스트
 urls = [
-    'https://www.blackdiamondequipment.com/en_US/product/womens-bd-stripe-tee/?colorid=14031', # 여성 상의
-    'https://www.blackdiamondequipment.com/en_US/product/womens-notion-pants/?colorid=14502', # 여성 하의
-    'https://www.blackdiamondequipment.com/en_US/product/mens-project-tee/?colorid=14083', # 남성 상의
-    'https://www.blackdiamondequipment.com/en_US/product/mens-notion-pants/?colorid=14385', # 남성 하의
+    'https://www.musinsa.com/categories/item/001?device=mw&sortCode=new', # 상의
 ]
 
 # 데이터 저장을 위한 리스트
 all_data = []
 
 # 폴더 생성
-output_folder = 'output'
+output_folder = 'musinsa'
 
 def click_element_js(driver, element):
     try:
@@ -95,7 +92,7 @@ for url in urls:
 if all_data:
     combined_df = pd.concat(all_data, ignore_index=True)
 
-    # 엑셀 파일로 저장
+    # 엑셀 파일로 저장-
     excel_path = os.path.join(output_folder, 'size_table_blackdiamond.xlsx')
     combined_df.to_excel(excel_path, index=False)
 
